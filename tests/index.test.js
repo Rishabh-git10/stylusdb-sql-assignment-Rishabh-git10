@@ -13,3 +13,19 @@ test('Basic Jest Test', () => {
       expect(data[0].name).toBe('John');
       expect(data[0].age).toBe('30'); //ignore the string type here, we will fix this later
   });
+
+const parseQuery = require('../src/queryParser');
+
+test('Parse SQL Query', () => {
+    const query = 'SELECT id, name FROM sample';
+    const parsed = parseQuery(query);
+    expect(parsed).toEqual({
+        fields: ['id', 'name'],
+        table: 'sample'
+    });
+});
+
+test('Invalid SQL Query', () => {
+    const query = 'Invalid SQL Query';
+    expect(() => parseQuery(query)).toThrow('Invalid query format');
+});
