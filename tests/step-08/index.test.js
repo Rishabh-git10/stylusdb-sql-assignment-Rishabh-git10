@@ -1,6 +1,6 @@
 const {readCSV} = require('../../src/csvReader');
-const {parseSelectQuery} = require('../../src/queryParser');
-const {executeSELECTQuery} = require('../../src/index');
+const {executeSELECTQuery } = require('../../src/queryExecutor');
+const { parseJoinClause, parseSelectQuery } = require('../../src/queryParser');
 
 test('Read CSV File', async () => {
     const data = await readCSV('./student.csv');
@@ -22,8 +22,8 @@ test('Parse SQL Query', () => {
         joinType: null,
         groupByFields: null,
         hasAggregateWithoutGroupBy: false,
-        orderByFields: null,
-        limit:null,
+        "orderByFields": null,
+        "limit": null,
         isDistinct: false
     });
 });
@@ -37,13 +37,12 @@ test('Execute SQL Query', async () => {
     expect(result[0]).not.toHaveProperty('age');
     expect(result[0]).toEqual({ id: '1', name: 'John' });
 });
-
 test('Parse SQL Query with WHERE Clause', () => {
     const query = 'SELECT id, name FROM student WHERE age = 25';
     const parsed = parseSelectQuery(query);
     expect(parsed).toEqual({
         fields: ['id', 'name'],
-       table: 'student',
+        table: 'student',
         whereClauses: [{
             "field": "age",
             "operator": "=",
@@ -54,12 +53,11 @@ test('Parse SQL Query with WHERE Clause', () => {
         joinType: null,
         groupByFields: null,
         hasAggregateWithoutGroupBy: false,
-        orderByFields: null,
-        limit:null,
+        "orderByFields": null,
+        "limit": null,
         isDistinct: false
     });
 });
-
 test('Execute SQL Query with WHERE Clause', async () => {
     const query = 'SELECT id, name FROM student WHERE age = 25';
     const result = await executeSELECTQuery(query);
@@ -89,8 +87,8 @@ test('Parse SQL Query with Multiple WHERE Clauses', () => {
         joinType: null,
         groupByFields: null,
         hasAggregateWithoutGroupBy: false,
-        orderByFields: null,
-        limit:null,
+        "orderByFields": null,
+        "limit": null,
         isDistinct: false
     });
 });
@@ -101,7 +99,6 @@ test('Execute SQL Query with Complex WHERE Clause', async () => {
     expect(result.length).toBe(1);
     expect(result[0]).toEqual({ id: '1', name: 'John' });
 });
-
 test('Execute SQL Query with Greater Than', async () => {
     const queryWithGT = 'SELECT id FROM student WHERE age > 22';
     const result = await executeSELECTQuery(queryWithGT);
@@ -128,8 +125,8 @@ test('Parse SQL Query with INNER JOIN', async () => {
         joinCondition: { left: 'student.id', right: 'enrollment.student_id' },
         groupByFields: null,
         hasAggregateWithoutGroupBy: false,
-        orderByFields: null,
-        limit:null,
+        "orderByFields": null,
+        "limit": null,
         isDistinct: false
     })
 });
@@ -142,12 +139,12 @@ test('Parse SQL Query with INNER JOIN and WHERE Clause', async () => {
         table: 'student',
         whereClauses: [{ field: 'student.age', operator: '>', value: '20' }],
         joinTable: 'enrollment',
-        joinType:"INNER",
+        joinType: "INNER",
         joinCondition: { left: 'student.id', right: 'enrollment.student_id' },
         groupByFields: null,
         hasAggregateWithoutGroupBy: false,
-        orderByFields: null,
-        limit:null,
+        "orderByFields": null,
+        "limit": null,
         isDistinct: false
     })
 });

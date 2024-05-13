@@ -4,11 +4,12 @@ const { parse } = require('json2csv');
 
 function readCSV(filePath) {
     const results = [];
-
     return new Promise((resolve, reject) => {
         fs.createReadStream(filePath)
             .pipe(csv())
-            .on('data', (data) => results.push(data))
+            .on('data', (data) => {
+                results.push(data)
+            })
             .on('end', () => {
                 resolve(results);
             })
@@ -23,4 +24,4 @@ async function writeCSV(filename, data) {
     fs.writeFileSync(filename, csv);
 }
 
-module.exports = {readCSV,writeCSV};
+module.exports = { readCSV, writeCSV };

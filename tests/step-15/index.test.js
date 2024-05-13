@@ -1,6 +1,6 @@
 const {readCSV} = require('../../src/csvReader');
-const {parseSelectQuery, parseJoinClause} = require('../../src/queryParser');
-const {executeSELECTQuery} = require('../../src/index');
+const {executeSELECTQuery } = require('../../src/queryExecutor');
+const { parseJoinClause, parseSelectQuery } = require('../../src/queryParser');
 
 test('Read CSV File', async () => {
     const data = await readCSV('./student.csv');
@@ -817,7 +817,6 @@ test('Execute SQL Query with LIKE Operator and DISTINCT', async () => {
 test('LIKE with ORDER BY and LIMIT', async () => {
     const query = "SELECT name FROM student WHERE name LIKE '%a%' ORDER BY name ASC LIMIT 2";
     const result = await executeSELECTQuery(query);
-    
     // Expecting the first two names alphabetically that contain 'a'
     expect(result).toEqual([{ name: 'Alice' }, { name: 'Jane' }]);
 });
